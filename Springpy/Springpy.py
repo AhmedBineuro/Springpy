@@ -50,6 +50,15 @@ class Springpy:
     # return index of added anchor
     def add_anchor(self, position: Vector2f = [100, 100], size: int = 10, initial_velocity: Vector2f = [0, 0], locked: bool = False) -> int:
         # We add an entry to each point to have matching indices in each list
+        for i in range(len(self.anchors)):
+            if (self.anchors[i] == None):
+                self.anchors[i] = copy.deepcopy(position)
+                self.anchorSizes[i] = size
+                self.velocities[i] = copy.deepcopy(initial_velocity)
+                self.accelerations[i] = copy.deepcopy([0, 0])
+                self.forces[i] = copy.deepcopy([0, 0])
+                self.locked[i] = locked
+                return i
         self.anchors.append(copy.deepcopy(position))
         self.anchorSizes.append(size)
         self.velocities.append(copy.deepcopy(initial_velocity))
@@ -59,17 +68,12 @@ class Springpy:
         return (len(self.anchors)-1)
 
     def remove_anchor(self, index: int):
-        for s in self.springs:
-            if (s.anchor1 == index):
-                s.anchor1 = None
-            if (s.anchor2 == index):
-                s.anchor2 = None
-        self.anchors.pop(index)
-        self.anchorSizes.pop(index)
-        self.velocities.pop(index)
-        self.accelerations.pop(index)
-        self.forces.pop(index)
-        self.locked.pop(index)
+        self.anchors[index] = None
+        self.anchorSizes[index] = None
+        self.velocities[index] = None
+        self.accelerations[index] = None
+        self.forces[index] = None
+        self.locked[index] = None
 
     def add_spring(self, anchor1: int = 0, anchor2: int = 0, stiffness: float = 1.0, length: float = 20) -> Spring:
         self.springs.append(
@@ -86,7 +90,7 @@ class Springpy:
         dampening = 0.4
         remove = []
         for spring in self.springs:
-            if (spring.anchor1 == None or spring.anchor2 == None):
+            if (self.anchors[spring.anchor1] == None or self.anchors[spring.anchor2] == None):
                 remove.append(spring)
                 continue
             vec1 = numpy.array(self.anchors[spring.anchor1])
@@ -121,7 +125,7 @@ class Springpy:
             self.springs.remove(r)
         for i in range(len(self.anchors)):
             # If the anchor is not locked apply updates
-            if self.locked[i]:
+            if self.anchors[i] == None or self.locked[i]:
                 continue
             # F=m*g (For gravity)
             self.forces[i][1] += self.anchorSizes[i]*self.gravityAcceleration
@@ -148,12 +152,14 @@ class Springpy:
 
     def draw(self, surface):
         for i in range(len(self.anchors)):
+            if self.anchors[i] == None:
+                continue
             pygame.draw.circle(
                 surface, "red", self.anchors[i], self.anchorSizes[i])
         for i in range(len(self.springs)):
             anchor1 = self.springs[i].anchor1
             anchor2 = self.springs[i].anchor2
-            if (anchor1 != None and anchor2 != None):
+            if (self.anchors[anchor1] != None and self.anchors[anchor2] != None):
                 pygame.draw.line(
                     surface, "black", self.anchors[anchor1], self.anchors[anchor2], width=int(self.springs[i].stiffness))
 
@@ -211,11 +217,12 @@ if __name__ == "__main__":
                     event.ui_element.set_text("Paused")
                 spring.Pause = not state
                 resolved = True
-        if resolved:
             return
         if (event.type == pygame.MOUSEBUTTONDOWN):
             if (event.button == 1):
                 for i in range(len(spring.anchors)):
+                    if spring.anchors[i] == None:
+                        continue
                     xCondition = (((spring.anchors[i][0]-spring.anchorSizes[i]) <= mousePos[0]) and (
                         mousePos[0] <= (spring.anchors[i][0]+spring.anchorSizes[i])))
                     yCondition = (((spring.anchors[i][1]-spring.anchorSizes[i]) <= mousePos[1]) and (
@@ -278,6 +285,8 @@ if __name__ == "__main__":
             if (event.button == 1):
                 if ((mode == 1) and (selected != -1)):
                     for i in range(len(spring.anchors)):
+                        if (spring.anchors[i] == None):
+                            continue
                         xCondition = (((spring.anchors[i][0]-spring.anchorSizes[i]) <= mousePos[0]) and (
                             mousePos[0] <= (spring.anchors[i][0]+spring.anchorSizes[i])))
                         yCondition = (((spring.anchors[i][1]-spring.anchorSizes[i]) <= mousePos[1]) and (
