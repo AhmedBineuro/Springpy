@@ -15,10 +15,10 @@
 - For a physics simulation, a larger timestep leads to a faster simulation and vice versa
 
 # Controls:
-- There are 4 modes in total (Manipulation, Spring, Anchor, and Deletion)
 - The GUI has 3 buttons:
   - Summon anchor button: would spawn an anchor in a random place with a random velocity
   - Mode button: cycles through the modes
+    - There are 4 modes in total (Manipulation, Spring, Anchor, and Deletion)
   - Pause button: toggles between simulation pausing and unpausing
 ## Manipulation Mode
 - Left Clicking and dragging around an anchor would move it
