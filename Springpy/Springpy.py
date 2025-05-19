@@ -176,7 +176,7 @@ if __name__ == "__main__":
             (40, 40+AppSize[1]/20), (AppSize[0]/4, AppSize[1]/20)), text=f"Mode: Manipulation", manager=guiManager)
 
     def GuiEvent(event: pygame.Event):
-        global guiManager, holdB1, holdB2, selected, prevLocked, mode
+        global guiManager, spring, holdB1, holdB2, selected, prevLocked, mode
         mousePos = numpy.array(pygame.mouse.get_pos())
         if (event.type == pygame_gui.UI_BUTTON_PRESSED):
             # Add anchor (summonButton)
@@ -194,24 +194,21 @@ if __name__ == "__main__":
 
         if (event.type == pygame.MOUSEBUTTONDOWN):
             if (event.button == 1):
-                if (holdB1):
-                    if (selected != -1 and (mode == 0)):
-                        spring.anchors[selected] = mousePos
-                else:
-                    for i in range(len(spring.anchors)):
-                        xCondition = (((spring.anchors[i][0]-spring.anchorSizes[i]) <= mousePos[0]) and (
-                            mousePos[0] <= (spring.anchors[i][0]+spring.anchorSizes[i])))
-                        yCondition = (((spring.anchors[i][1]-spring.anchorSizes[i]) <= mousePos[1]) and (
-                            mousePos[1] <= (spring.anchors[i][1]+spring.anchorSizes[i])))
-                        if (xCondition and yCondition):
-                            selected = i
-                            prevLocked = spring.locked[i]
-                            spring.locked[i] = True
-                            break
-                    if (mode == 2 and selected != -1):
-                        spring.remove_anchor(selected)
-                        selected = -1
-            if (event.button == 1):
+                for i in range(len(spring.anchors)):
+                    xCondition = (((spring.anchors[i][0]-spring.anchorSizes[i]) <= mousePos[0]) and (
+                        mousePos[0] <= (spring.anchors[i][0]+spring.anchorSizes[i])))
+                    yCondition = (((spring.anchors[i][1]-spring.anchorSizes[i]) <= mousePos[1]) and (
+                        mousePos[1] <= (spring.anchors[i][1]+spring.anchorSizes[i])))
+                    if (xCondition and yCondition):
+                        selected = i
+                        prevLocked = spring.locked[i]
+                        spring.locked[i] = True
+                        holdB1 = True
+                        break
+                if ((mode == 2) and (selected != -1)):
+                    spring.remove_anchor(selected)
+                    selected = -1
+            elif (event.button == 3):
                 if (not holdB2):
                     if mode == 0:
                         for i in range(len(spring.anchors)):
@@ -259,7 +256,10 @@ if __name__ == "__main__":
                 holdB1 = False
             elif (event.button == 3):
                 holdB2 = False
-
+        elif event.type == pygame.MOUSEMOTION:
+            if holdB1 and selected != -1 and mode == 0:
+                spring.anchors[selected][0] = event.pos[0]
+                spring.anchors[selected][1] = event.pos[1]
         guiManager.process_events(event)
 
     def GuiDraw(surface: pygame.Surface):
