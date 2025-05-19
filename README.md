@@ -1,4 +1,5 @@
 # Springpy
+![Springpy App](Cropped.gif)
 - A test repository trying to figure out the optimal application framework for my other projects
 - Unlike a lot of my recent projects, this project is mainly programmed in Python and it serves two goals:
   - Explore spring systems (spring simulation)
