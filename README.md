@@ -20,16 +20,17 @@
   - Mode button: cycles through the modes
     - There are 4 modes in total (Manipulation, Spring, Anchor, and Deletion)
   - Pause button: toggles between simulation pausing and unpausing
-## Manipulation Mode
+## Modes
+### Manipulation Mode
 - Left Clicking and dragging around an anchor would move it
 - Right clicking an anchor would toggle whether the anchor is affected by forces
-## Spring Mode
+### Spring Mode
 - Left clicking an anchor and releasing left click at another anchor would create a spring between the two anchors 
 - Scrolling up and down would increase and decrease the spring stiffness
-## Anchor Mode
+### Anchor Mode
 - Left clicki8ng would create a new anchor
 - Scrolling up and down would increase and decrease the anchor size/mass
-## Deletion Mode
+### Deletion Mode
 - Right clicking a spring deletes it
 - Left clicking an anchor would delete it
 # To-do:
