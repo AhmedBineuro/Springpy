@@ -81,7 +81,7 @@ class Springpy:
         return self.springs[len(self.springs)-1]
 
     def update(self, realTimeStep: float = 0):
-        deltaTime: float = 0.1
+        deltaTime: float = 0.4
         if self.Pause:
             return
         for i in range(len(self.forces)):
@@ -191,13 +191,11 @@ if __name__ == "__main__":
     def GuiEvent(event: pygame.Event):
         global guiManager, spring, holdB1, holdB2, selected, prevLocked, mode, currentAnchorSize, currentSpringStiffness
         mousePos = numpy.array(pygame.mouse.get_pos())
-        resolved = False
         if (event.type == pygame_gui.UI_BUTTON_PRESSED):
             # Add anchor (summonButton)
             if (event.ui_object_id == "#summoningButton"):
                 spring.add_anchor(position=[random.random()*(AppSize[0]-20.0)+10.0, random.random()*(AppSize[1]-20.0)+10],
                                   initial_velocity=[(random.random()*2.0+-1.0)*10.0, (random.random()*2.0+-1)*10], locked=False)
-                resolved = True
             if (event.ui_object_id == "#modeButton"):
                 mode = (mode+1) % 4
                 if mode == 0:
@@ -208,7 +206,7 @@ if __name__ == "__main__":
                     event.ui_element.set_text("Mode: Anchor")
                 elif mode == 3:
                     event.ui_element.set_text("Mode: Deletion")
-                resolved = True
+                return
             if (event.ui_object_id == "#pauseButton"):
                 state = spring.Pause
                 if (state):
@@ -216,9 +214,8 @@ if __name__ == "__main__":
                 else:
                     event.ui_element.set_text("Paused")
                 spring.Pause = not state
-                resolved = True
-            return
-        if (event.type == pygame.MOUSEBUTTONDOWN):
+                return
+        elif (event.type == pygame.MOUSEBUTTONDOWN):
             if (event.button == 1):
                 for i in range(len(spring.anchors)):
                     if spring.anchors[i] == None:
@@ -237,12 +234,17 @@ if __name__ == "__main__":
                     spring.remove_anchor(selected)
                     selected = -1
                 if ((mode == 2) and (selected == -1)):
-                    spring.add_anchor(position=mousePos.tolist(),
-                                      size=currentAnchorSize, locked=True)
+                    guiRect = pygame.Rect(
+                        40, 40, AppSize[0]/4, 40+(2*AppSize[1]/20))
+                    if (not guiRect.collidepoint(mousePos.tolist())):
+                        spring.add_anchor(position=mousePos.tolist(),
+                                          size=currentAnchorSize, locked=True)
             elif (event.button == 3):
                 if (not holdB2):
                     if mode == 0:
                         for i in range(len(spring.anchors)):
+                            if (spring.anchors[i] == None):
+                                continue
                             xCondition = ((spring.anchors[i][0]-spring.anchorSizes[i]) <= mousePos[0]) and (
                                 mousePos[0] <= (spring.anchors[i][0]+spring.anchorSizes[i]))
                             yCondition = (((spring.anchors[i][1]-spring.anchorSizes[i]) <= mousePos[1]) and (
@@ -269,11 +271,6 @@ if __name__ == "__main__":
                                     max(0, (min(1, numpy.dot(AP, AB)/AB_len_squared))))
                                 closest = A+t*AB
                             dist = numpy.linalg.norm(mousePos-closest)
-                            # numerator = (v1[1]*mousePos[0])-(v1[0]*mousePos[1])+(spring.anchors[s.anchor2][0] *
-                            #                                                      spring.anchors[s.anchor1][1])-(spring.anchors[s.anchor2][1]*spring.anchors[s.anchor1][0])
-                            # denom = math.sqrt(math.pow(spring.anchors[s.anchor2][1]-spring.anchors[s.anchor1][1], 2)+math.pow(
-                            #     spring.anchors[s.anchor2][0]-spring.anchors[s.anchor1][0], 2))
-                            # dist = numerator/denom
                             if (dist < minDist and dist < 4):
                                 minDist = dist
                                 removedSpring = index
@@ -327,8 +324,11 @@ if __name__ == "__main__":
         if (mode == 2):
             mousePos = numpy.array(pygame.mouse.get_pos()) - \
                 numpy.array(surface.get_offset())
-            pygame.draw.circle(center=mousePos.tolist(), surface=surface, color=pygame.Color(
-                190, 160, 160), radius=currentAnchorSize)
+            guiRect = pygame.Rect(
+                40, 40, AppSize[0]/4, 40+(2*AppSize[1]/20))
+            if (not guiRect.collidepoint(mousePos.tolist())):
+                pygame.draw.circle(center=mousePos.tolist(), surface=surface, color=pygame.Color(
+                    190, 160, 160), radius=currentAnchorSize)
         guiManager.draw_ui(surface)
 
     app.appendToInvokeQueue(GuiSetup)
