@@ -3,7 +3,7 @@
 - Unlike a lot of my recent projects, this project is mainly programmed in Python and it serves two goals:
   - Explore spring systems (spring simulation)
   - Design an app framework for future projects to enable fast development
-- The main implementation of the can be found in the Springpy.py file which can be run simply by using `python3 Springpy.py ` after installing the needed libraries (found in [pre-requisites](./Springpy/Pre-requisites.md) file)
+- The main implementation of the can be found in the Springpy.py file which can be run simply by using `python3 ./Springpy/Springpy.py ` after installing the needed libraries (found in [pre-requisites](./Springpy/Pre-requisites.md) file)
 # Main takeaways
 - An app framework should give the user access to the following timings
   - Manual: whenever the user invokes a specific function
