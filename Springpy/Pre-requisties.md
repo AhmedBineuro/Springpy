@@ -1,7 +1,0 @@
----
-## Pre-requisites
-- Pygame
-- Numpy
-- 
-
----
