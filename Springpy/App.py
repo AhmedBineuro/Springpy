@@ -54,6 +54,7 @@ class App:
     def execute(self):
         while self.running:
             self.on_execute()
+        pygame.quit()
 
     # Function that occurs every refresh of the app
     def on_execute(self):
@@ -65,17 +66,18 @@ class App:
             for task in self.eventQueue:
                 task(event)
 
+                # Task section
+        for task in self.taskQueue:
+            task(self.deltaTime)
+
         # Drawing section
         self.displaySurface.fill("white")
         for task in self.drawQueue:
             task(self.displaySurface)
         pygame.display.flip()
 
-        # Task section
         # To get deltaTime in milliseconds
         self.deltaTime = self.clock.tick(self.maxFps)/1000
-        for task in self.taskQueue:
-            task(self.deltaTime)
 
 
 if __name__ == "__main__":
