@@ -46,6 +46,7 @@ class Springpy:
         self.forces: List[Vector2f] = []
         # Whether each point is affected by gravity and other forces
         self.locked: List[bool] = []
+        self.timeStep = 0.1
 
     # return index of added anchor
     def add_anchor(self, position: Vector2f = [100, 100], size: int = 10, initial_velocity: Vector2f = [0, 0], locked: bool = False) -> int:
@@ -81,7 +82,7 @@ class Springpy:
         return self.springs[len(self.springs)-1]
 
     def update(self, realTimeStep: float = 0):
-        deltaTime: float = 0.4
+        deltaTime: float = self.timeStep
         if self.Pause:
             return
         for i in range(len(self.forces)):
@@ -230,15 +231,15 @@ if __name__ == "__main__":
                         spring.locked[i] = True
                         holdB1 = True
                         break
-                if ((mode == 3) and (selected != -1)):
-                    spring.remove_anchor(selected)
-                    selected = -1
                 if ((mode == 2) and (selected == -1)):
                     guiRect = pygame.Rect(
                         40, 40, AppSize[0]/4, 40+(2*AppSize[1]/20))
                     if (not guiRect.collidepoint(mousePos.tolist())):
                         spring.add_anchor(position=mousePos.tolist(),
                                           size=currentAnchorSize, locked=True)
+                if ((mode == 3) and (selected != -1)):
+                    spring.remove_anchor(selected)
+                    selected = -1
             elif (event.button == 3):
                 if (not holdB2):
                     if mode == 0:
@@ -280,6 +281,7 @@ if __name__ == "__main__":
                     holdB2 = True
         elif (event.type == pygame.MOUSEBUTTONUP):
             if (event.button == 1):
+
                 if ((mode == 1) and (selected != -1)):
                     for i in range(len(spring.anchors)):
                         if (spring.anchors[i] == None):
@@ -295,10 +297,11 @@ if __name__ == "__main__":
                                 spring.locked[selected] = prevLocked
                                 selected = -1
                                 holdB1 = False
+                # For all other hold left button cases
                 if (selected != -1):
                     spring.locked[selected] = prevLocked
-                    selected = -1
                     holdB1 = False
+                    selected = -1
             elif (event.button == 3):
                 holdB2 = False
         elif event.type == pygame.MOUSEWHEEL:
