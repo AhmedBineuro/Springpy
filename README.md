@@ -1,10 +1,19 @@
 # Springpy
 ![Springpy App](Cropped.gif)
-- A test repository trying to figure out the optimal application framework for my other projects
-- Unlike a lot of my recent projects, this project is mainly programmed in Python and it serves two goals:
-  - Explore spring systems (spring simulation)
-  - Design an app framework for future projects to enable fast development
-- The main implementation of the can be found in the Springpy.py file which can be run simply by using `python3 ./Springpy/Springpy.py ` after installing the needed libraries (found in [pre-requisites](./Springpy/Pre-requisites.md) file)
+## Table of contents
+- [Springpy](#springpy)
+  - [Table of contents](#table-of-contents)
+- [Main takeaways](#main-takeaways)
+- [Controls:](#controls)
+  - [Modes](#modes)
+    - [Manipulation Mode](#manipulation-mode)
+    - [Spring Mode](#spring-mode)
+    - [Anchor Mode](#anchor-mode)
+    - [Deletion Mode](#deletion-mode)
+- [End to end tutorial](#end-to-end-tutorial)
+  - [What to install:](#what-to-install)
+  - [To run](#to-run)
+- [To-do:](#to-do)
 # Main takeaways
 - An app framework should give the user access to the following timings
   - Manual: whenever the user invokes a specific function
