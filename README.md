@@ -34,6 +34,27 @@
 ### Deletion Mode
 - Right clicking a spring deletes it
 - Left clicking an anchor would delete it
+# End to end tutorial
+- To setup everything here is each terminal command and it's explanation
+## What to install:
+- Pygame (A way to draw and manage the window and simulator)
+```bash
+pip install --user pygame
+```
+- Pygame GUI (A way to have GUI for the windows managed by Pygame)
+```bash
+pip install --user pygame_gui
+```
+- Numpy (A vector/matrix math library)
+```bash
+pip install --user numpy
+```
+## To run
+```bash
+python3 Springpy/Springpy.py
+```
 # To-do:
+- [ ] Add a way to select existing springs and anchors
+- [ ] Add a way to manipulate already existing springs and anchors
 - [ ] Make the C++ version of the application framework
 - [ ] Make the C++ version of the spring simulation app
