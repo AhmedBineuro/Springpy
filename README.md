@@ -15,6 +15,7 @@
   - [To run](#to-run)
 - [To-do:](#to-do)
 # Main takeaways
+Going into this I was mainly just trying to implement a spring physics simulation, but after working on it, I learned so much more than just spring physics. Here are some of the things that I learned throughout the process of developing this
 - An app framework should give the user access to the following timings
   - Manual: whenever the user invokes a specific function
   - Event loop: whenever the app events are being processed
