@@ -39,7 +39,7 @@ Going into this I was mainly just trying to implement a spring physics simulatio
 - Left clicking an anchor and releasing left click at another anchor would create a spring between the two anchors 
 - Scrolling up and down would increase and decrease the spring stiffness
 ### Anchor Mode
-- Left clicki8ng would create a new anchor
+- Left clicking would create a new anchor
 - Scrolling up and down would increase and decrease the anchor size/mass
 ### Deletion Mode
 - Right clicking a spring deletes it
